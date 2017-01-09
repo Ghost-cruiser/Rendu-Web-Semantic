@@ -1,0 +1,10 @@
+﻿{
+  "development": {
+    "database": "TODO",
+    "dialect": "mssql",
+    "host": "localhost",
+    "password": "test",
+    "port": "1433",
+    "username": "test"
+  }
+}

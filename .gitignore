@@ -3,3 +3,19 @@
 ################################################################################
 
 /templates
+/.vs
+/packages
+/ServerNode/Properties
+/ServerNode/obj/Debug
+/ServerNode/bin
+/TD2 - NodeJS/.vs
+/TD2 - NodeJS/bin
+/TD2 - NodeJS/obj/Debug
+/TD2 - NodeJS/Web.Release.config
+/TD2 - NodeJS/Web.Debug.config
+/TD2 - NodeJS/Web.config
+/TD2 - NodeJS/packages.config
+/TD2 - NodeJS/ApplicationInsights.config
+*.sln
+*.user
+*.csproj
