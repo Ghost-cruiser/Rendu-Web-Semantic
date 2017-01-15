@@ -11,12 +11,13 @@ module.exports = function (app, router) {
                 res.render('public/login');
             })
 
-            .post(function (req, res) {
-                models.User.findOne({ where: { username: req.body.username } })
+        .post(function (req, res) {
+            models.User.findOne({ where: { email: req.body.email } })
                         .then(function (user) {
                             if (user.password === req.body.password) {
                                 var role = user.role ? "admin" : "user";
-                                req.session.id = user.id;
+
+                                req.session.userId = user.id;
                                 req.session.role = role;
 
 

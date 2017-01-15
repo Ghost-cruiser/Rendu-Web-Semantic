@@ -11,7 +11,7 @@ module.exports = function (app, router) {
         // return the list of all drawings for a user
         .get(function (req, res) {
             // GET ALL
-            models.Drawings.findAll({ where: { userId: req.session.id } }).then(function (drawings) {
+            models.Drawings.findAll({ where: { userId: req.session.userId } }).then(function (drawings) {
                 res.status(200).render('user/drawings', drawings);
 
             }).catch(function (error) {
@@ -29,7 +29,7 @@ module.exports = function (app, router) {
 
         .get(function (req, res, id) {
             // GET ONE
-            models.Drawings.findOne({ where: { id: id, userId: req.session.id} }).then(function (drawing) {
+            models.Drawings.findOne({ where: { id: id, userId: req.session.userId} }).then(function (drawing) {
                 res.status(200).render('user/guess', drawing);
 
             }).catch(function (error) {
@@ -44,7 +44,7 @@ module.exports = function (app, router) {
         .post(function (req, res) {
             //ADD
             var draw = req.body;
-            draw.userId = req.session.id;
+            draw.userId = req.session.userId;
 
             models.Drawings.create(draw).then(function () {
                 res.status(200).redirect('api/drawings?message="Dessin créé!"');
@@ -61,7 +61,7 @@ module.exports = function (app, router) {
         .delete(function (req, res) {
             var id = req.params.id;
 
-            models.Drawings.destroy({ where: { id: id, userId: req.session.id } }).then(function () {
+            models.Drawings.destroy({ where: { id: id, userId: req.session.userId } }).then(function () {
                 res.status(200).redirect('api/drawings?message="Dessin supprimé"');
 
             }).catch(function (error) {

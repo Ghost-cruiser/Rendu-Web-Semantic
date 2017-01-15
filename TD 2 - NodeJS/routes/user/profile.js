@@ -13,7 +13,7 @@ module.exports = function (app, router) {
         // Get the user's profile
         .get(function (req, res) {
             // USER
-            models.User.findOne({ where: { id: req.session.id } }).then(function (user) {
+            models.User.findOne({ where: { id: req.session.userId } }).then(function (user) {
                 res.status(200).render('user/profile', user);
 
             }).catch(function (error) {
@@ -35,7 +35,7 @@ module.exports = function (app, router) {
                 user.couleur = user.couleur.replace('#', '');
 
             // UPDATE 
-            models.User.update(req.body, { where: { id: req.session.id } }).then(function () {
+            models.User.update(req.body, { where: { id: req.session.userId } }).then(function () {
                 res.status(200).render('user/index');
 
             }).catch(function (error) {
@@ -51,7 +51,7 @@ module.exports = function (app, router) {
         // DELETE /api/profile
         // Delete a user using its username
         .delete(function (req, res) {
-            models.User.destroy({ where: { id: req.session.id } }).then(function () {
+            models.User.destroy({ where: { id: req.session.userId } }).then(function () {
                 req.session.destroy();
 
                 res.status(204).render('public/login', {
