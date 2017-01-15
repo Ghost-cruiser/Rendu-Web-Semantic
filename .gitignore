@@ -19,3 +19,9 @@
 *.sln
 *.user
 *.csproj
+/TD 2 - NodeJS/.vs/ExpressServer/v14*
+/TD 2 - NodeJS/node_modules*
+/TD 2 - NodeJS/obj/Debug
+/TD 2 - NodeJS/typings
+*.njsproj
+/TD 2 - NodeJS/typings.json

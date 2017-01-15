@@ -1,0 +1,13 @@
+<div id="usercard"> 
+    <div onclick="window.location = 'api/profile/<% user.id %>'">
+        <div>
+            <img id="avatar" src="<% user.userpic %>"/>
+        </div>
+        <div>
+            <span><% user.firstname %></span>
+        </div>
+    </div>
+    <div>
+        <a href="<% baseURL %>/logout">Déconnexion</a>
+    </div>
+</div>

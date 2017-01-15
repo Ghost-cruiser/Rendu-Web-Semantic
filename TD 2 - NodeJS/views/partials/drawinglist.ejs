@@ -1,0 +1,22 @@
+<div id="content-presenter">
+    <%= if (drawings && drawings.length) { %>
+        <%= for(var i = 0; i < drawings.length; i++) { %>
+            <div>
+                <div>
+                    <span>Dessin numero <% i %></span>
+                </div>
+                <div>
+                    <div>
+                        <a href="<% baseURL + basepath %>/drawings?id=<% drawings[i].id %>">Voir</a>
+                    </div>
+                    <form action="<% baseURL + basepath %>/drawings?id=<% drawings[i].id %>" method="delete"> 
+                        <input type="submit" value="Supprimer" />
+                    </form>
+                </div>
+            </div>
+        <%= } %>
+    <%= } %>
+    <%= else {%>
+        <em>Pas encore de dessin!</em>
+    <%= } %>
+</div>

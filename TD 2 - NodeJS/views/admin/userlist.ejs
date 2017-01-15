@@ -1,0 +1,23 @@
+<% var title = 'User list' %>
+<% include ../partials/head %>
+
+    <% include ../partials/alert %>
+<a href="<% baseURL %>/admin/users/0">Ajouter un utilisateur</a>
+<% for(var i = 0; i < users.length; i++){ %> 
+    <div>
+        <div>
+            <span><% users[i].username %></span>
+        </div>
+        <div>
+            <a href="<% baseURL %>/admin/drawings/<% users[i].id %>">Dessins</a>
+
+            <a href="<% baseURL %>/admin/users/<% users[i].id %>">Modifier</a>
+
+            <form method="delete" action="/admin/users/<% users[i].id %>">
+                <input type="submit" value="Supprimer"/>
+            </form>
+        </div>
+    </div>
+<% } %>
+
+<% include ../partials/foot %>

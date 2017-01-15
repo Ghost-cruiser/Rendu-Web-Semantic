@@ -1,0 +1,10 @@
+﻿{
+  "development": {
+    "database": "pictionary",
+    "dialect": "mysql",
+    "host": "localhost",
+    "password": "",
+    "port": "1433",
+    "username": "root"
+  }
+}
