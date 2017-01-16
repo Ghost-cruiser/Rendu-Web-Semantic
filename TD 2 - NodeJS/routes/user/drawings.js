@@ -1,18 +1,17 @@
 ﻿"use strict";
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
 
     var models = app.get("models");
 
     router
-
-        .route('/drawings')
+        .route('/api/drawings')
 
         // return the list of all drawings for a user
         .get(function (req, res) {
             // GET ALL
-            models.Drawings.findAll({ where: { userId: req.session.userId } }).then(function (drawings) {
-                res.status(200).render('user/drawings', drawings);
+            models.Drawing.findAll({ where: { userId: req.session.userId } }).then(function (drawings) {
+                res.status(200).render('user/drawings', { drawings: drawings });
 
             }).catch(function (error) {
 
@@ -24,21 +23,28 @@ module.exports = function (app, router) {
         });
 
     router
+        .route('/api/drawings/:id')
 
-        .route('/drawings/:id')
+        .get(function (req, res) {
+            var id = req.params.id;
 
-        .get(function (req, res, id) {
-            // GET ONE
-            models.Drawings.findOne({ where: { id: id, userId: req.session.userId} }).then(function (drawing) {
-                res.status(200).render('user/guess', drawing);
+            // GET OR START ONE
+            if (id) {
 
-            }).catch(function (error) {
+                models.Drawing.findOne({ where: { id: id, userId: req.session.userId } }).then(function (result) {
+                    res.status(200).render('user/guess', result.get());
 
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
+                }).catch(function (error) {
+
+                    res.status(500).render('public/error', {
+                        message: "Une erreur est survenue",
+                        error: error,
+                    });
                 });
-            });
+            }
+            else {
+                res.render('user/paint');
+            }
         })
 
         .post(function (req, res) {
@@ -46,8 +52,8 @@ module.exports = function (app, router) {
             var draw = req.body;
             draw.userId = req.session.userId;
 
-            models.Drawings.create(draw).then(function () {
-                res.status(200).redirect('api/drawings?message="Dessin créé!"');
+            models.Drawing.create(draw).then(function () {
+                res.status(200).redirect(config.baseURL + '/api/drawings?message="Dessin créé!"');
 
             }).catch(function (error) {
 
@@ -61,8 +67,8 @@ module.exports = function (app, router) {
         .delete(function (req, res) {
             var id = req.params.id;
 
-            models.Drawings.destroy({ where: { id: id, userId: req.session.userId } }).then(function () {
-                res.status(200).redirect('api/drawings?message="Dessin supprimé"');
+            models.Drawing.destroy({ where: { id: id, userId: req.session.userId } }).then(function () {
+                res.status(200).redirect(config.baseURL + '/api/drawings?message="Dessin supprimé"');
 
             }).catch(function (error) {
 

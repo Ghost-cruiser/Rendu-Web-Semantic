@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     // ADMIN INDEX
 
     const
@@ -11,7 +11,10 @@ module.exports = function (app, router) {
     router.all('/admin/*', function (req, res, next) {
         if (!req.session || req.session.role !== "admin")
             res.status(403)
-                .redirect('/error?status=403&amp;reason=Vous devez être authentifier en tant qu\'administrateur.');
+                .redirect(config.baseURL + '/error?status=403&amp;reason=Vous devez être authentifier en tant qu\'administrateur.');
+        else
+            res.locals.params = req.params || {};
+
         next();
     });
 
@@ -24,7 +27,7 @@ module.exports = function (app, router) {
         .forEach(
         function (file) {
             console.log(file);
-            require('./' + file)(app, router);
+            require('./' + file)(app, config, router);
         });
     //require('./drawings.js')(app, router);
     //require('./users.js')(app, router);

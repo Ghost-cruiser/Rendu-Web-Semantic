@@ -23,7 +23,7 @@
 
 
 // configure app
-app.locals.baseURL = "/pictio";
+app.locals.baseURL = config.baseURL;
 app.set('env', env);
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -41,7 +41,7 @@ setDao(app, config, session);
 setRoutes(app, config, router);
 
 // base URI
-app.use('/pictio', router);
+app.use(config.baseURL, router);
 
 logger.info('server start');
 

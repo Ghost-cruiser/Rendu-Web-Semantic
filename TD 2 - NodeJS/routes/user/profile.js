@@ -1,20 +1,21 @@
 ﻿"use strict";
 
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
 
     var models = app.get("models");
 
     router
 
-        .route('/profile')
+        .route('/api/profile')
 
         // GET /api/profile 
         // Get the user's profile
         .get(function (req, res) {
             // USER
-            models.User.findOne({ where: { id: req.session.userId } }).then(function (user) {
-                res.status(200).render('user/profile', user);
+            models.User.findOne({ where: { id: req.session.userId } }).then(function (result) {
+
+                res.status(200).render('user/profile', result.get());
 
             }).catch(function (error) {
 
@@ -31,15 +32,12 @@ module.exports = function (app, router) {
         .post(function (req, res) {
             var user = req.body;
 
-            if (user.couleur)
-                user.couleur = user.couleur.replace('#', '');
-
             // UPDATE 
             models.User.update(req.body, { where: { id: req.session.userId } }).then(function () {
-                res.status(200).render('user/index');
+                res.status(200).redirect('/api/index?message="Profile mis à jour!');
 
             }).catch(function (error) {
-
+                console.log(error);
                 res.status(500).render('public/error', {
                     message: "Une erreur est survenue",
                     error: error,

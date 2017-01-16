@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     
     router
 

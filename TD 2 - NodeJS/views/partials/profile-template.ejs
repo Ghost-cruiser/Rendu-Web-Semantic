@@ -1,4 +1,11 @@
-<% var isNew = typeof email !== "string" %>
+<%
+ var isNew = typeof email !== "string" %>
+<% function convertDate(inputFormat) {
+                    function pad(s) { return (s < 10) ? '0' + s : s; }
+                    var d = new Date(inputFormat);
+                    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
+                }
+%>
 
 <h2><% title %></h2>
 
@@ -8,56 +15,34 @@
     <ul>
         <li>
             <label for="email">E-mail :</label>
-            <input type="email" name="email" id="email" autofocus required <% if (!isNew) email %> />
+            <input type="email" name="email" id="email" autofocus required 
+                   value="<% if (!isNew){ %><%= email %><% } %>" />
             <span class="form_hint">Format attendu "name@something.com"</span>
         </li>
-
-        <li>
-            <label for="mdp1">Mot de passe :</label>
-            <input type="password" name="password" id="mdp1" required placeholder="Entrez votre mot de passe..." pattern="[a-zA-Z0-9]{6,8}" onkeyup="validateMdp2()" title="Le mot de passe doit contenir de 6 à 8 caractères alphanumériques.">
-
-            <span class="form_hint">De 6 à 8 caractères alphanumériques.</span>
-        </li>
-        <li>
-            <label for="mdp2">Confirmez mot de passe :</label>
-            <input type="password" id="mdp2" required onkeyup="validateMdp2()">
-            <span class="form_hint">Les mots de passes doivent être égaux.</span>
-            <script>
-
-                    validateMdp2 = function(e) {
-                        var mdp1 = document.getElementById('mdp1');
-                        var mdp2 = document.getElementById('mdp2');
-
-                        if (mdp1.value && mdp2.value && mdp1.value === mdp2.value) {
-                            // ici on supprime le message d'erreur personnalisé, et du coup mdp2 devient valide.
-                            document.getElementById('mdp2').setCustomValidity('');
-                    } else {
-                        // ici on ajoute un message d'erreur personnalisé, et du coup mdp2 devient invalide.
-                        document.getElementById('mdp2').setCustomValidity('Les mots de passes doivent être égaux.');
-                    }
-                    }
-            </script>
-        </li>
+        
+        <% if (isNew){ %>
+            <% include password-template %>
+        <% } %> 
 
         <li>
             <label for="firstname">Prénom :</label>
-            <input type="text" name="firstname" id="firstname" value="<% if (!isNew) firstname %>" required placeholder="Votre prénom..." />
+            <input type="text" name="firstname" id="firstname" value="<% if (!isNew){ %><%= firstname %><% } %>" required placeholder="Votre prénom..." />
         </li>
         <li>
             <label for="name">Nom :</label>
-            <input type="text" name="name" id="name" value="<% if (!isNew) name %>" placeholder="Votre nom..." />
+            <input type="text" name="name" id="name" value="<% if (!isNew){ %><%= name %><% } %>" placeholder="Votre nom..." />
         </li>
         <li>
             <label for="tel">Telephone :</label>
-            <input type="tel" name="tel" id="tel" value="<% if (!isNew) tel %>" />
+            <input type="tel" name="tel" id="tel" value="<% if (!isNew){ %><%= tel  %><% } %>" />
         </li>
         <li>
             <label for="website">Site :</label>
-            <input type="url" name="website" id="website" value="<% if (!isNew) website %>" />
+            <input type="url" name="website" id="website" value="<% if (!isNew){ %><%= website %><% } %>" />
         </li>
         <li>
             <label for="city">Ville :</label>
-            <input type="text" name="ville" id="city" placeholder="Votre ville..." value="<% if (!isNew) city %>" />
+            <input type="text" name="city" id="city" placeholder="Votre ville..." value="<% if (!isNew){ %><%= city  %><% } %>" />
         </li>
         <li>
             <label for="sexM">H</label>
@@ -73,35 +58,38 @@
 
                 computeAge = function(e) {
                     try{
-                        console.log(document.getElementById("birthdate").valueAsDate)
-                        var years = new Date() - document.getElementById("birthdate").valueAsDate;
+                        console.log(document.getElementById("birthdate").value)
+                        var years = new Date() - new Date(document.getElementById("birthdate").value);
                         document.getElementById("age").value = new Date(years).getFullYear() - 1970;
-                    } catch(e) {
+                    } catch (e) {
+                        console.log(e);
                         // supprimez ici la valeur de l'élément age
                         document.getElementById("age").value = null;
                     }
                 }
+
             </script>
-            <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()" value="<% if (!isNew) birthdate %>" />
+            <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()" 
+                   value="<%if(!isNew){%><%=convertDate(birthdate)%><%}%>" />
             <span class="form_hint">Format attendu "JJ/MM/AAAA"</span>
         </li>
         <li>
             <label for="age">Age:</label>
-            <input type="number" name="age" id="age" disabled value="<% if (!isNew) age %>" />
+            <input type="number" name="age" id="age" disabled />
             <!-- à quoi sert l'attribut disabled ? -->
             <!--A eempêcher des actions utilisateurs sur ce champ-->
         </li>
         <li>
             <label for="size">Taille :</label>
-            <input type="range" name="taille" id="size" min="0" max="2.50" step="0.01" value="<% if (!isNew) size %>" />
+            <input type="range" name="taille" id="size" min="0" max="2.50" step="0.01" value="<% if (!isNew){ %><%= taille %><% } %>" />
         </li>
         <li>
             <label for="color">Couleur préférée :</label>
-            <input type="color" name="couleur" id="color" value="<% if (!isNew) color %>" />
+            <input type="color" name="couleur" id="color" value="<% if (!isNew){ %><%= couleur %><% } %>" />
         </li>
         <% if(!isNew && admin){ %>
         <li>
-            <input type="radio" name="role" id="role" value="Admin" <% if(role){ %> checked <%  } %> />
+            <input type="radio" name="role" id="role" value="Admin" <% if(role){ %> checked <% } %> />
         </li>
         <% } %>
         <li>

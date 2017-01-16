@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     // PUBLIC INDEX
 
     const
@@ -10,16 +10,13 @@ module.exports = function (app, router) {
     // Require routes
     fs.readdirSync(__dirname).filter(
         function (file) {
+            // Filter : all files != index.js
             return (file.indexOf(".") !== 0) && (file !== "index.js");
         })
 
         .forEach(
         function (file) {
-            console.log(file);
-            require('./' + file)(app, router);
+            // Action : require file
+            require('./' + file)(app, config, router);
         });
-    //require('./login.js')(app, router);
-    //require('./inscription.js')(app, router);
-    //require('./logout.js')(app, router);
-
 };

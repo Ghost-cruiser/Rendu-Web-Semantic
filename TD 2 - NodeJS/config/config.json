@@ -5,6 +5,7 @@
     "host": "localhost",
     "password": "",
     "port": "1433",
-    "username": "root"
+    "username": "root",
+    "baseURL":  "/pictio"
   }
 }

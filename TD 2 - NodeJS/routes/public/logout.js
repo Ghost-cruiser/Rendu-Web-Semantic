@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     
     router
 
@@ -8,8 +8,15 @@ module.exports = function (app, router) {
 
         .get(function (req, res) {
             if (req.session)
-                req.session.destroy();
+                req.session.destroy(function (err) {
+                    
+                    delete app.locals.user;
 
-            res.status(302).redirect('/login');
+                    if (err)
+                        console.log(err);
+
+                    res.status(302).redirect(config.baseURL + '/login');
+                });
+
         });
 }

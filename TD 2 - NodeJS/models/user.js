@@ -27,8 +27,25 @@ module.exports = function (sequelize, DataTypes) {
         },
 
         city : DataTypes.STRING,
-        taille : DataTypes.INTEGER,
-        couleur : DataTypes.CHAR(6),
+        taille: {
+            type: DataTypes.INTEGER(3),
+            get: function () {
+                return this.getDataValue('taille') / 100;
+            },
+            set: function (val) {
+                this.setDataValue('taille', val * 100);
+            },
+        },
+        couleur: {
+            type: DataTypes.CHAR(6),
+            set: function (val) {
+                this.setDataValue('couleur', val.replace('#', ''));
+            },
+            get: function () {
+                var couleur = this.getDataValue('couleur');
+                return '#' + couleur;
+            }
+        },
         profilepic: DataTypes.BLOB,
 
         role: {

@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     
     var models = app.get("models");
     
@@ -19,9 +19,6 @@ module.exports = function (app, router) {
         .post(function (req, res) {
             var id = req.params.id,
                 user = req.body;
-
-            if (user.couleur)
-                user.couleur = user.couleur.replace('#', '');
 
             // INSCRIPTION
             models.User.create(user).then(function () {

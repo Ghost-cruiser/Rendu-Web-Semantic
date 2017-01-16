@@ -1,13 +1,13 @@
 ﻿"use strict";
 
 
-module.exports = function (app, router) {
+module.exports = function (app, config, router) {
     
     var models = app.get("models");
     
     router
 
-        .route('/users')
+        .route('/admin/users')
 
         // GET /admin/users 
         // Send the profile to a connected user or
@@ -28,7 +28,7 @@ module.exports = function (app, router) {
 
     router
 
-        .route('/users/:id')
+        .route('/admin/users/:id')
 
 
         // GET /admin/users/:id
@@ -38,8 +38,8 @@ module.exports = function (app, router) {
 
             if (id) {
                 // ADMIN
-                models.User.findOne({ where: { id: req.body.id } }).then(function (user) {
-                    res.status(200).render('admin/userprofile', user);
+                models.User.findOne({ where: { id: req.body.id } }).then(function (result) {
+                    res.status(200).render('admin/userprofile', result.get());
 
                 }).catch(function (error) {
 
@@ -61,9 +61,6 @@ module.exports = function (app, router) {
             var id = req.params.id,
                 user = req.body;
             
-            if (user.couleur)
-                user.couleur = user.couleur.replace('#', '');
-
             if (!id) {
                 // INSCRIPTION
                 models.User.create(user).then(function () {

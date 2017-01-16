@@ -28,13 +28,15 @@ module.exports = function (app, config, router) {
 
         .forEach(
         function (dir) {
-            require('./' + dir)(app, router);
+            require('./' + dir)(app, config, router);
         });
 
+    // init redirect
     router
         .route('/')
         .get(function (req, res, next) {
-            res.redirect('/pictio/login');
+            console.log("CHECKED");
+            res.redirect(config.baseURL + '/login');
         })
 
     //app.use(function (req, res, next) {
