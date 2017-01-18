@@ -36,9 +36,20 @@ app.use(express.static(__dirname + '/public')); // Indique que le dossier /publi
 
 
 app.use(cookieParser());
+
 // setting server
 setDao(app, config, session);
 setRoutes(app, config, router);
+
+// use session and query strings in templates
+app.use(function (req, res, next) {
+
+    res.locals.query = req.query || {};
+
+    res.locals.user = req.session.user;
+
+    next();
+});
 
 // base URI
 app.use(config.baseURL, router);
@@ -46,32 +57,6 @@ app.use(config.baseURL, router);
 logger.info('server start');
 
 app.listen(1313);
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        console.log('error intercepted by the app', err);
-        res.status(err.status || 500);
-        res.render('public/error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    console.log('error intercepted by the app', err);
-    res.status(err.status || 500);
-    res.render('public/error', {
-        message: err.message,
-        error: {}
-    });
-});
 
 
 module.exports = app;

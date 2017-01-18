@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <% include common/head %>
+</head>
+
+<body style="width:100vw; height:100vh;">
+
+    <header class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <%- include(directory + '/components/nav') %>
+            </div>
+        </nav>
+    </header>
+
+
+    <main role="main">
+        <div class="container">
+            <%- include(page) %>
+        </div>
+    </main>
+
+    <footer class="container">
+        <div class="container-fluid">
+            <% include common/foot %>
+        </div>
+    </footer>
+
+    <% include common/scripts %>
+
+</body>
+</html>

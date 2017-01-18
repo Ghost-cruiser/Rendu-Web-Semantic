@@ -1,66 +1,68 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
 
     var models = app.get("models");
 
     router
-        .route('/api/drawings')
+        .route('/user/drawings')
 
         // return the list of all drawings for a user
         .get(function (req, res) {
             // GET ALL
-            models.Drawing.findAll({ where: { userId: req.session.userId } }).then(function (drawings) {
-                res.status(200).render('user/drawings', { drawings: drawings });
+            models.Drawing.findAll({ where: { userId: req.session.userId } })
+                .then(function (drawings) {
+                    pagehelper
+                        .render(res, 'user', 'drawings', drawings, 'Mes dessins');
 
-            }).catch(function (error) {
-
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                }).catch(function (error) {
+                    pagehelper
+                        .sendError(res, error);
             });
         });
 
     router
-        .route('/api/drawings/:id')
+        .route('/user/drawings/:id')
 
         .get(function (req, res) {
             var id = req.params.id;
-
-            // GET OR START ONE
-            if (id) {
-
+            
+            if (id != 0) {
+                // TODO : load User.couleur
                 models.Drawing.findOne({ where: { id: id, userId: req.session.userId } }).then(function (result) {
-                    res.status(200).render('user/guess', result.get());
+
+                    var draw = result.get();
+
+                    pagehelper
+                        .render(res, 'user', 'guess', draw, 'Guess');
 
                 }).catch(function (error) {
 
-                    res.status(500).render('public/error', {
-                        message: "Une erreur est survenue",
-                        error: error,
-                    });
+                    pagehelper
+                        .sendError(res, error);
                 });
             }
             else {
-                res.render('user/paint');
+                // New drawing
+                pagehelper
+                    .render(res, 'user', 'paint', draw, 'Paint');
             }
         })
 
         .post(function (req, res) {
             //ADD
             var draw = req.body;
+
             draw.userId = req.session.userId;
 
             models.Drawing.create(draw).then(function () {
-                res.status(200).redirect(config.baseURL + '/api/drawings?message="Dessin créé!"');
+                pagehelper.redirect(res, 'user', 'drawings', {
+                    message: 'Dessin créé!'
+                });
 
             }).catch(function (error) {
-
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, error);
             });
         })
 
@@ -68,14 +70,14 @@ module.exports = function (app, config, router) {
             var id = req.params.id;
 
             models.Drawing.destroy({ where: { id: id, userId: req.session.userId } }).then(function () {
-                res.status(200).redirect(config.baseURL + '/api/drawings?message="Dessin supprimé"');
+                pagehelper.redirect(res, 'user', 'drawings', {
+                    message: 'Dessin supprimé!'
+                });
 
             }).catch(function (error) {
 
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, error);
             });
     });
 }

@@ -2,8 +2,8 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Drawing = sequelize.define("Drawing", {  
-        commands: DataTypes.TEXT("long"),
-        drawing: DataTypes.BLOB,
+        drawingCommands: DataTypes.TEXT("long"),
+        image: DataTypes.BLOB,
     });
     
     return Drawing;

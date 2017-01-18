@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     // PUBLIC INDEX
 
     const
@@ -17,6 +17,6 @@ module.exports = function (app, config, router) {
         .forEach(
         function (file) {
             // Action : require file
-            require('./' + file)(app, config, router);
+            require('./' + file)(app, config, router, pagehelper);
         });
 };

@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     // ADMIN INDEX
 
     const
@@ -10,13 +10,18 @@ module.exports = function (app, config, router) {
     // Filter 
     router.all('/admin/*', function (req, res, next) {
         if (!req.session || req.session.role !== "admin")
-            res.status(403)
-                .redirect(config.baseURL + '/error?status=403&amp;reason=Vous devez être authentifier en tant qu\'administrateur.');
-        else
-            res.locals.params = req.params || {};
+            pagehelper
+                .sendError(res, 'Accès restreint', 'Vous devez être authentifier en tant qu\'administrateur.');
 
         next();
     });
+
+    router
+        .route('/admin/index')
+        .get(function (req, res, next) {
+            pagehelper
+                .render(res, 'admin', 'index', {}, 'Dashboard');
+        });
 
     // Require routes
     fs.readdirSync(__dirname).filter(
@@ -27,7 +32,7 @@ module.exports = function (app, config, router) {
         .forEach(
         function (file) {
             console.log(file);
-            require('./' + file)(app, config, router);
+            require('./' + file)(app, config, router, pagehelper);
         });
     //require('./drawings.js')(app, router);
     //require('./users.js')(app, router);

@@ -1,61 +1,59 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
 
-    var models = app.get("models");
+    const models = app.get("models");
 
     router
         .route('/admin/drawings/:userId')
 
-        // return the list of all drawings for a user
+        // Return the list of all drawings for a user
         .get(function (req, res) {
-            // GET ALL
             var userId = req.params.userId;
 
-            models.Drawing.findAll({ where: { userId: req.session.userId } }).then(function (drawings) {
-                res.status(200).render('drawings', drawings);
+            models.Drawing.findAll({ where: { userId: userId } }).then(function (drawings) {
+                pagehelper 
+                    .render(res, 'user', 'drawings', drawings, 'Liste des dessins');
 
             }).catch(function (error) {
-
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, 500, error, "Une erreur est survenue durant la récupération des dessins");
             });
         });
 
     router
         .route('/admin/drawings/:userId/:id')
 
+        // Return one user's drawing
         .get(function (req, res) {
             var userId = req.params.userId,
                 id = req.params.id;
 
-            // GET ONE
-            models.Drawing.findOne({ where: { id: id, userId: req.session.userId} }).then(function (drawing) {
-                res.status(200).render('user/guess', drawing);
+            models.Drawing.findOne({ where: { id: id, userId: userId } }).then(function (drawing) {
+                pagehelper
+                    .render(res, 'user', 'guess', drawing, 'Formulaire guess');
 
             }).catch(function (error) {
-
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, 500, error, "Une erreur est survenue durant la récupération du dessin");
             });
         })
 
         .post(function (req, res) {
-
             var userId = req.params.userId,
                 id = req.params.id;
 
-            if (id) {
+            if (id != 0) { 
                 // UPDATE
                 models.Drawing.update(req.body, { where: { id: id, userId: req.session.userId } }).then(function () {
-                    res.status(200).redirect(config.baseURL + "/admin/drawings/" + userId + '?message="Dessin mis à jour"');
+                    pagehelper
+                        .redirect(res, 'admin', ['drawings', userId], {
+                            message: 'Dessin mis à jour'
+                        });
 
                 }).catch(function (error) {
-                    sendError(res, 500, error);
+                    pagehelper
+                        .sendError(res, 500, error);
                 });
             }
             else {
@@ -63,29 +61,34 @@ module.exports = function (app, config, router) {
                 req.body.userId = userId;
 
                 models.Drawing.create(req.body).then(function () {
-                    res.status(200).redirect(config.baseURL + "/admin/drawings/" + userId + '?message="Dessin créé"');
+                    pagehelper
+                        .redirect(res, 'admin', ['drawings', userId], {
+                            message: 'Dessin créé'
+                        });
 
                 }).catch(function (error) {
-                    sendError(res, 500, error);
+                    pagehelper
+                        .sendError(res, 500, error);
+
                 });
 
             }
         })
 
         .delete(function (req, res, id) {
-            
-            models.Drawing.destroy({ where: { id: id, userId: req.session.userId } }).then(function () {
-                res.status(200).redirect(config.baseURL + "/admin/drawings/" + userId + '?message="Dessin effacé"');
+
+            var userId = req.session.user.id;
+
+            models.Drawing.destroy({ where: { id: id, userId: userId } }).then(function () {
+                pagehelper
+                    .redirect(res, 'admin', ['drawings', userId], {
+                        message: 'Dessin effacé'
+                    });
 
             }).catch(function (error) {
-                sendError(res, 500, error);
+                pagehelper
+                    .sendError(res, error, 'Une erreur est survenue lors de la délétion');
             });
         });
 
-    function sendError(res, status, error, message) {
-        res.status(status).render('public/error', {
-            message: message || "Une erreur est survenue",
-            error: error,
-        });
-    }
 }

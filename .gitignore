@@ -25,3 +25,5 @@
 /TD 2 - NodeJS/typings
 *.njsproj
 /TD 2 - NodeJS/typings.json
+/TD 2 - NodeJS/public/bower_components
+/TD 2 - NodeJS/.vs/config

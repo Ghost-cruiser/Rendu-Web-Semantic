@@ -11,6 +11,7 @@ module.exports = function (app, config, session) {
               host: config.host,
               dialect: config.dialect,
           }),
+
           sequelizeSessionStore = new SessionStore({ db: database });
 
     var dao = {};
@@ -33,10 +34,6 @@ module.exports = function (app, config, session) {
                 dao[modelName].associate(dao);
             }
         });
-
-    // FOUND OUT WHY?? oldcode
-    //dao.database = database;
-    //dao.Sequelize = Sequelize;
 
     // Synchronise
     database.sync();

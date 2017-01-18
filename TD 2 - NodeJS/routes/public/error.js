@@ -1,12 +1,13 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     
     router
 
         .route('/error')
 
         .get(function (req, res) {
-            res.render('public/error');
+            pagehelper
+                .render(res, 'public', 'error');
         });
 }

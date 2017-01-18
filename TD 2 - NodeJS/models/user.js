@@ -42,8 +42,7 @@ module.exports = function (sequelize, DataTypes) {
                 this.setDataValue('couleur', val.replace('#', ''));
             },
             get: function () {
-                var couleur = this.getDataValue('couleur');
-                return '#' + couleur;
+                return '#' + this.getDataValue('couleur');
             }
         },
         profilepic: DataTypes.BLOB,
@@ -51,13 +50,20 @@ module.exports = function (sequelize, DataTypes) {
         role: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
+
+            get: function () {
+                return this.getDataValue('role') ?
+                    "admin" :
+                    "user";
+            }
         },
 
     }, {
         classMethods: {
             associate: function (models) {
                 User.hasMany(models.Drawing, {
-                    onDelete: 'cascade'
+                    onDelete: 'cascade',
+                    as:'userId',
                 })
             }
         }

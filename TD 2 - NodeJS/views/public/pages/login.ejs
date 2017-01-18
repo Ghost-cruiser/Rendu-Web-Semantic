@@ -1,0 +1,21 @@
+<% include ../../common/templates/alert %>
+<div id="login-page">
+    <div class="container-fluid">
+        <form method="post" action="<%= baseURL %>/login">
+            <h1>Login</h1>
+
+            <div class="input-group">
+                <input type='email' id='user' name='email' class="form-control" placeholder="user@example.com" />
+            </div>
+
+            <div class="input-group">
+                <input type='password' id='pass' name='password' pattern="[a-zA-Z0-9]{6,8}" class="form-control" placeholder="Mot de passe" />
+            </div>
+
+            <div class="input-group">
+                <input type="submit" value="Login" class="btn btn-primary">
+                Accès à l'<a href="<%= baseURL %>/inscription">inscription</a>
+            </div>
+        </form>
+    </div>
+</div>

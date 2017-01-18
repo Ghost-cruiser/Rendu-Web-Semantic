@@ -1,16 +1,17 @@
 <div id="content-presenter">
-    <a href="<% baseURL + basepath %>/0">Dessiner!</a>
+    <a href="<%= baseURL + basepath %>/0">Dessiner!</a>
     <% if(drawings && drawings.length) { %>
         <% for(var i = 0; i < drawings.length; i++) { %>
             <div>
                 <div>
-                    <span>Dessin numero <% i %></span>
+                    <span><%= drawings[i].name || 'Dessin (sans nom) ' + i  %></span>
+                    <img src="<%= drawings[i].image %>" style="width: 30px; height:30px;" />
                 </div>
                 <div>
                     <div>
-                        <a href="<% baseURL + basepath %>/<% drawings[i].id %>">Voir</a>
+                        <a href="<%= baseURL + basepath %>/<%= drawings[i].id %>">Voir</a>
                     </div>
-                    <form action="<% baseURL + basepath %>/<% drawings[i].id %>" method="delete"> 
+                    <form action="<%= baseURL + basepath %>/<%= drawings[i].id %>" method="delete"> 
                         <input type="submit" value="Supprimer" />
                     </form>
                 </div>

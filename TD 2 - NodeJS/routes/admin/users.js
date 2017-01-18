@@ -1,9 +1,9 @@
 ﻿"use strict";
 
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     
-    var models = app.get("models");
+    const models = app.get("models");
     
     router
 
@@ -16,13 +16,12 @@ module.exports = function (app, config, router) {
         .get(function (req, res) {
             // ADMIN
             models.User.findAll().then(function (users) {
-                res.status(200).render('userlist', users);
-            }).catch(function (error) {
+                pagehelper
+                    .render(res, 'admin', 'users', users, 'Liste des utilisateurs');
 
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+            }).catch(function (error) {
+                pagehelper
+                    .sendError(res, 500, error, "Une erreur est survenue durant la récupération des utilisateurs");
             });
         });
 
@@ -36,25 +35,23 @@ module.exports = function (app, config, router) {
         .get(function (req, res) {
             var id = req.params.id;
 
-            if (id) {
-                // ADMIN
+            if (id != 0) {
                 models.User.findOne({ where: { id: req.body.id } }).then(function (result) {
-                    res.status(200).render('admin/userprofile', result.get());
+                    pagehelper
+                        .render(res, 'admin', 'user', result.get(), 'Fiche utilisateur');
 
                 }).catch(function (error) {
-
-                    res.status(500).render('public/error', {
-                        message: "Une erreur est survenue",
-                        error: error,
-                    });
+                    pagehelper
+                        .sendError(res, 500, error, "Une erreur est survenue durant la récupération des utilisateurs");
                 });
             }
             else {
-                res.status(200).render('admin/userprofile');
+                pagehelper
+                    .render(res, 'admin', 'user', {}, 'Inscription');
             }
         })
 
-        // POST /api/users
+        // POST /user/users
         // Subscribe a user if not connected.
         // Updates the profile if reqquester is connected
         .post(function (req, res) {
@@ -64,51 +61,45 @@ module.exports = function (app, config, router) {
             if (!id) {
                 // INSCRIPTION
                 models.User.create(user).then(function () {
-                    res.status(200).render('admin/userlist', {
-                        message: 'User Created'
-                    });
+                    pagehelper
+                        .redirect(res, 'admin', 'users', null, {
+                            message: 'User Created'
+                        });
 
                 }).catch(function (error) {
-
-                    res.status(500).render('public/error', {
-                        message: "Une erreur est survenue",
-                        error: error,
-                    });
+                    pagehelper
+                        .sendError(res, 500, error, "Une erreur est survenue durant l'inscription.");
                 });
             }
 
             else {
                     // UPDATE 
-                    models.User.update(req.body, { where: { id: id } }).then(function () {
-                        res.status(200).render('admin/userlist',{
-                            message: 'User updated'
+                models.User.update(req.body, { where: { id: id } }).then(function () {
+                    pagehelper
+                        .redirect(res, 'admin', 'users', null, {
+                            message: 'User Updated'
                         });
 
                     }).catch(function (error) {
-
-                        res.status(500).render('public/error', {
-                            message: "L'utilisateur n'a pas pu être ajouté",
-                            error: error,
-                        });
+                        pagehelper
+                            .sendError(res, 500, error, "Une erreur est survenue durant la mise à jour");
                     });
                 
             }
         })
 
-        // DELETE /api/users
+        // DELETE /user/users
         // Delete a user using its username
         .delete(function (req, res) {
             models.User.destroy({ where: { id: req.body.id } }).then(function () {
-                res.status(204).render('admin/userlist', {
-                    message: 'User deleted'
-                });
+                pagehelper
+                    .redirect(res, 'admin', 'users', null, {
+                        message: 'User deleted'
+                    });
 
             }).catch(function (error) {
-
-                res.status(500).render('public/error',{
-                    message: "L'utilisateur n'a pas pu être effacé",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, 500, error, "L'utilisateur n'a pas pu être effacé");
             });
         })
 

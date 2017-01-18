@@ -1,42 +1,44 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     
     var models = app.get("models");
     
     router
         .route('/login')
 
-            .get(function (req, res) {
-                res.render('public/login');
-            })
+        .get(function (req, res) {
+            if (req.session.user !== undefined)
+                pagehelper.redirect(res, req.session.user.role, 'index');
+            else
+                pagehelper.render(res, 'public', 'login', {}, 'Connexion');
+        })
 
         .post(function (req, res) {
-            models.User.findOne({ where: { email: req.body.email } })
-                        .then(function (user) {
-                            if (user.password === req.body.password) {
-                                var role = user.role ? "admin" : "user";
+            models.User.findOne({ where: { email: req.body.email } }).then(function (result) {
+                if (result) {
+                    if (user.password === req.body.password) {
+                        var user = result.get();
 
-                                req.session.userId = user.id;
-                                req.session.role = role;
+                        req.session.user = user;
 
-
-                                app.locals.user = { 
-                                    id: user.id,
-                                    firstname: user.firstname,
-                                    userpic: user.profilepic,
-                                }
-
-                                res.render(role + '/' + 'index');
-                            }
-                            else {
-                                res.render('public/login', { message: 'Le nom d\'utilisateur ou le mot de passe est incorrect' });
-                            }
-                        })
-
-                    .catch(function (error) {
-                        console.log(error);
-                        res.render('public/error', { message: "Une erreur est survenue", error: error });
-                    })
-            });
+                        pagehelper.redirect(res, req.session.user.role, 'index');
+                    }
+                    else {
+                        pagehelper.redirect(res, 'public', 'login', {
+                            message: 'Mot de passe incorrect.'
+                        });
+                    }
+                }
+                else {
+                    pagehelper.redirect(res, 'public', 'login', {
+                        message: 'Nom d\'utilisateur non reconnu.'
+                    });
+                }
+            })
+                .catch(function (error) {
+                    pagehelper
+                        .sendError(res, error);
+                })
+        });
 }

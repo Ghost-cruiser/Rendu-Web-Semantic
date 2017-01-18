@@ -1,0 +1,6 @@
+<% if (query.message) {%>
+<% var state = 'danger'; if(query.status && query.status < 400) state = error; %>
+<div class="alert alert-<%= state %>" role="alert">
+    <em><%= query.message %></em>
+</div>
+<% } %>

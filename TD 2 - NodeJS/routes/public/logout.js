@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     
     router
 
@@ -9,13 +9,13 @@ module.exports = function (app, config, router) {
         .get(function (req, res) {
             if (req.session)
                 req.session.destroy(function (err) {
-                    
-                    delete app.locals.user;
 
                     if (err)
                         console.log(err);
 
-                    res.status(302).redirect(config.baseURL + '/login');
+                    delete res.locals.user;
+
+                    pagehelper.redirect(res, 'public', 'login', null, 302);
                 });
 
         });

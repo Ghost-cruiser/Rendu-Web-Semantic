@@ -1,19 +1,23 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     // API INDEX
     const
         fs = require("fs"),
         path = require("path");
 
     // Filter 
-    router.all('/api/*', function (req, res, next) {
+    router.all('/user/*', function (req, res, next) {
         if (!req.session || !req.session.role)
-            res.status(403).redirect(config.baseURL + '/login');
-        else // Binding params to varaibles accessible
-            res.locals.params = req.params || {};
+            pagehelper.redirect(res, 'public', 'login', null, 403);
 
         next();
+    });
+
+    router
+        .route('/user/index')
+        .get(function (req, res, next) {
+            pagehelper.render(res, 'user', 'index');
     });
 
     // Require routes
@@ -25,7 +29,7 @@ module.exports = function (app, config, router) {
         .forEach(
         function (file) {
             console.log(file);
-            require('./' + file)(app, config, router);
+            require('./' + file)(app, config, router, pagehelper);
         });
     
 };

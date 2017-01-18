@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, page) {
 
     const
         fs = require("fs"),
@@ -8,17 +8,17 @@ module.exports = function (app, config, router) {
 
     // ROUTES INDEX
     router.use(function (req, res, next) {
+        console.log('Setting params');
+
         console.log('Setting Headers');
         res.setHeader("Access-Control-Allow-Origin", "*");
         //res.header("Access-Control-Allow-Headers", "X-Requested-With");
         res.setHeader('Access-Control-Allow-Headers', 'Authorization,content-type');
-
+        
         next(); // make sure we go to the next routes and don't stop here
     });
 
-    // catch 404 and forward to error handler
-
-
+    var pagehelper = require('./_pagehelper')(app, config);
 
     // Load all models
     fs.readdirSync(__dirname).filter(
@@ -28,25 +28,36 @@ module.exports = function (app, config, router) {
 
         .forEach(
         function (dir) {
-            require('./' + dir)(app, config, router);
+            require('./' + dir)(app, config, router, pagehelper);
         });
 
     // init redirect
     router
         .route('/')
         .get(function (req, res, next) {
-            console.log("CHECKED");
-            res.redirect(config.baseURL + '/login');
+            if (req.session.user)
+                res.redirect(config.baseURL + '/' + req.session.user.role + '/index');
+            else
+                res.redirect(config.baseURL + '/login');
         })
 
-    //app.use(function (req, res, next) {
-    //    var err = new Error('Not Found');
-    //    err.status = 404;
-    //    console.log("in 404");
-    //    next(err);
-    //});
-    //require('./public/index.js')(app, router);
-    //require('./user/index.js')(app, router);
-    //require('./admin/index.js')(app, router);
+
+    // error handlers
+
+    // development error handler
+    // will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function (err, req, res, next) {
+            pagehelper
+                .sendError(res, err, 'Error intercepted by the application.', err.status || 500);
+        });
+    }
+
+    // production error handler
+    // no stacktraces leaked to user
+    app.use(function (err, req, res, next) {
+        pagehelper
+            .sendError(res, err, '', err.status || 500);
+    });
 
 };

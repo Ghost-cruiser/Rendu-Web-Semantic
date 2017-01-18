@@ -1,5 +1,3 @@
-<% var title = 'Formulaire Paint' %>
-<% include ../partials/head %>
 <script>
 
         // les quatre tailles de pinceau possible.
@@ -125,12 +123,12 @@
 
 <canvas id="myCanvas"></canvas>
 
-<form name="tools" action="<%= savePath %>" method="post">
+<form name="tools" method="post">
     <input id="size" type="range" min="0" max="4" />
 
     <!--TODO-->
     <!-- ici, insérez un champs de type color avec id="color", et comme valeur l'attribut de session couleur (à l'aide d'une commande php echo).) -->
-    <input id="color" type="color" value="#<%= userColor %>" />
+    <input id="color" type="color" value="<%= usercolor %>" />
 
     <input id="restart" type="button" value="Recommencer" />
 
@@ -140,5 +138,3 @@
 
     <input id="validate" type="submit" value="Valider" />
 </form> 
-
-<% include ../partials/foot %>

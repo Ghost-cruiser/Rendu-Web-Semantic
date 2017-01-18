@@ -1,67 +1,62 @@
 ﻿"use strict";
 
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
 
     var models = app.get("models");
 
     router
 
-        .route('/api/profile')
+        .route('/user/profile')
 
-        // GET /api/profile 
+        // GET /user/profile 
         // Get the user's profile
         .get(function (req, res) {
             // USER
-            models.User.findOne({ where: { id: req.session.userId } }).then(function (result) {
-
-                res.status(200).render('user/profile', result.get());
+            models.User.findOne({ where: { id: req.session.user.id } }).then(function (result) {
+                pagehelper
+                    .render(res, 'user', 'profile', result.get(), 'Profile');
 
             }).catch(function (error) {
-
-                res.status(404).render('public/error', {
-                    message: "Aucun utilisateur ne semble correspondre",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, error);
             });
 
         })
 
-        // POST /api/profile 
+        // POST /user/profile 
         // Updates the profile 
         .post(function (req, res) {
             var user = req.body;
 
             // UPDATE 
-            models.User.update(req.body, { where: { id: req.session.userId } }).then(function () {
-                res.status(200).redirect('/api/index?message="Profile mis à jour!');
+            models.User.update(req.body, { where: { id: req.session.user.id } }).then(function () {
+                pagehelper
+                    .redirect(res, 'user', 'index', '', {
+                        message: 'Profile mis à jour!'
+                    });
 
             }).catch(function (error) {
-                console.log(error);
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, error);
             });
 
         })
 
-        // DELETE /api/profile
+        // DELETE /user/profile
         // Delete a user using its username
         .delete(function (req, res) {
-            models.User.destroy({ where: { id: req.session.userId } }).then(function () {
+            models.User.destroy({ where: { id: req.session.user.id } }).then(function () {
                 req.session.destroy();
 
-                res.status(204).render('public/login', {
-                    message: 'User deleted'
-                });
+                pagehelper
+                    .redirect(res, 'public', 'login', '', {
+                        message: 'Utilisateur supprimé'
+                    }, 204);
 
             }).catch(function (error) {
-
-                res.status(500).render('public/error', {
-                    message: "Une erreur est survenue",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, error);
             });
 
         })

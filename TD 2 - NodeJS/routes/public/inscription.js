@@ -1,9 +1,9 @@
 ﻿"use strict";
 
 
-module.exports = function (app, config, router) {
+module.exports = function (app, config, router, pagehelper) {
     
-    var models = app.get("models");
+    const models = app.get("models");
     
     router
 
@@ -11,10 +11,11 @@ module.exports = function (app, config, router) {
 
         // GET /inscription
         .get(function (req, res) {
-            res.render('public/inscription');
+            pagehelper
+                .render(res, 'public', 'inscription', {}, 'Formulaire d\'inscription');
         })
 
-        // POST /api/users 
+        // POST /user/users 
         // Subscribe a user.
         .post(function (req, res) {
             var id = req.params.id,
@@ -22,17 +23,12 @@ module.exports = function (app, config, router) {
 
             // INSCRIPTION
             models.User.create(user).then(function () {
-                res.status(200).render('public/login', {
-                    message: 'User Created'
-                });
+                pagehelper
+                    .render(res, 'public', 'login', {}, 'Formulaire de connexion');
 
             }).catch(function (error) {
-
-                console.log(error);
-                res.status(500).render('public/error', {
-                    message: "L'utilisateur n'a pas pu être ajouté",
-                    error: error,
-                });
+                pagehelper
+                    .sendError(res, 500, error, "Inscription échouée");
             });
         });
 }

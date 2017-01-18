@@ -1,4 +1,27 @@
-﻿/* === Remove input autofocus webkit === */
+﻿#login-page{
+    display:flex;
+    justify-content: center;
+
+    height:100%;
+}
+main {
+    height:80vh;
+}
+footer {
+    height:5vh;
+}
+main > div{
+    height:100%;
+}
+
+input {
+    margin-bottom: 2vh !important;
+}
+
+form > div {
+    width:100%;
+}
+/* === Remove input autofocus webkit === */
 *:focus {outline: none;}
 
 /* === Form Typography === */
