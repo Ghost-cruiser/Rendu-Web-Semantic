@@ -5,6 +5,9 @@ module.exports = function (sequelize, DataTypes) {
         password: {
             type: DataTypes.CHAR(65),
             allowNull: false,
+            get: function () {
+                return undefined;
+            }
         },
         email: {
             type: DataTypes.CHAR(65),
@@ -45,7 +48,13 @@ module.exports = function (sequelize, DataTypes) {
                 return '#' + this.getDataValue('couleur');
             }
         },
-        profilepic: DataTypes.BLOB,
+        profilepic: {
+            type: DataTypes.BLOB,
+
+            get: function () {
+                return "user" + '/' + this.getDataValue('id') + '/profilepic';
+            }
+        },
 
         role: {
             type: DataTypes.BOOLEAN,
@@ -59,14 +68,25 @@ module.exports = function (sequelize, DataTypes) {
         },
 
     }, {
-        classMethods: {
-            associate: function (models) {
-                User.hasMany(models.Drawing, {
-                    onDelete: 'cascade',
-                    as:'userId',
-                })
+            classMethods: {
+                associate: function (models) {
+                    User.hasMany(models.Drawing, {
+                        onDelete: 'cascade'
+                    })
+                }
+            },
+            getterMethods: {
+                session: function () {
+                    return {
+                        id: this.id,
+                        role: this.role,
+                        displayName: this.firstname,
+                        couleur: this.couleur,
+                        email: this.email
+                    }
+                }
             }
-        }
+
     });
     
     return User;

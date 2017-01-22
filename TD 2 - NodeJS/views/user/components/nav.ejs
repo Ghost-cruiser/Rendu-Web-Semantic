@@ -1,18 +1,17 @@
 <div class="navbar-header">
-    <% include ../templates/user-tpl %>
+    <% include ../../common/templates/user %>
 </div>
 
-<ul class="nav nav-tabs nav-justified">
+<ul class="nav nav-tabs">
     <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/logout">Home</a>
-    </li>
-
-
-    <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/todo">Utilisateurs</a>
+        <a class="btn btn-primary" href="<%= baseURL %>/user/index">Home</a>
     </li>
 
     <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/logout">Déconnexion</a>
+        <a class="btn btn-primary" href="<%= baseURL %>/user/drawings">Mes dessins</a>
+    </li>
+
+    <li>
+        <a class="btn btn-primary" href="<%= baseURL %>/public/logout">DÃ©connexion</a>
     </li>
 </ul>

@@ -4,9 +4,10 @@ module.exports = function (app, config, router, pagehelper) {
     
     router
 
-        .route('/logout')
+        .route('/public/logout')
 
         .get(function (req, res) {
+            req.logout();
             if (req.session)
                 req.session.destroy(function (err) {
 

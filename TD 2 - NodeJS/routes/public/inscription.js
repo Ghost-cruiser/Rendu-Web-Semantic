@@ -7,7 +7,7 @@ module.exports = function (app, config, router, pagehelper) {
     
     router
 
-        .route('/inscription')
+        .route('/public/inscription')
 
         // GET /inscription
         .get(function (req, res) {

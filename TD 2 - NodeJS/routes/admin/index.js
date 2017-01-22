@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router, pagehelper) {
+module.exports = function (app, config, router, pagehelper, passport) {
     // ADMIN INDEX
 
     const
@@ -32,7 +32,7 @@ module.exports = function (app, config, router, pagehelper) {
         .forEach(
         function (file) {
             console.log(file);
-            require('./' + file)(app, config, router, pagehelper);
+            require('./' + file)(app, config, router, pagehelper, passport);
         });
     //require('./drawings.js')(app, router);
     //require('./users.js')(app, router);

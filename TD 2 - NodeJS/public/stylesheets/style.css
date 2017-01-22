@@ -1,9 +1,19 @@
 ﻿#login-page{
     display:flex;
     justify-content: center;
-
+    padding-top:10vh;
     height:100%;
 }
+#login-page > div{
+    height: 40vh;
+    width: 300px;
+}
+
+h1 {
+    text-align:center;
+    margin-bottom:30px;
+}
+
 main {
     height:80vh;
 }
@@ -14,18 +24,29 @@ main > div{
     height:100%;
 }
 
-input {
-    margin-bottom: 2vh !important;
+nav li {
+    width: 12rem;
 }
 
 form > div {
     width:100%;
+    margin-top:22px;
+}
+
+#header-nav {
+    display:flex;
+    justify-content: space-between;
+    padding: 10px 10px 0 10px;
 }
 /* === Remove input autofocus webkit === */
 *:focus {outline: none;}
 
 /* === Form Typography === */
-body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;}
+html {
+    font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+    font-size: 14px;
+
+}
 .inscription h2, .inscription label {font-family:Georgia, Times, "Times New Roman", serif;}
 .form_hint, .required_notification {font-size: 11px;}
 

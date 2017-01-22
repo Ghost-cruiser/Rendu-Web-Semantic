@@ -6,6 +6,11 @@
     "password": "",
     "port": "1433",
     "username": "root",
-    "baseURL":  "/pictio"
+    "baseURL": "/pictio",
+    "siteURL": "http://localhost:1337/",
+
+    "facebook_api_key": "FB APP ID",
+    "facebook_api_secret": "FB API SECRET",
+    "callback_url": "http://localhost:3000/auth/facebook/callback"
   }
 }

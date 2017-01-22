@@ -1,4 +1,4 @@
-<% var isNew = typeof email !== "string" %>
+<% var isNew = data.email === undefined %>
 <% function convertDate(inputFormat) {
                     function pad(s) { return (s < 10) ? '0' + s : s; }
                     var d = new Date(inputFormat);
@@ -14,49 +14,49 @@
     <ul>
         <li>
             <label for="email">E-mail :</label>
-            <input type="email" name="email" id="email" autofocus required 
-                   value="<% if (!isNew){ %><%= email %><% } %>" />
+            <input type="email" name="email" id="email" autofocus required
+                   value="<% if (!isNew){ %><%= data.email %><% } %>" />
             <span class="form_hint">Format attendu "name@something.com"</span>
         </li>
-        
+
         <% if (isNew){ %>
-            <% include password-template %>
-        <% } %> 
+        <% include pwd_validation %>
+        <% } %>
 
         <li>
             <label for="firstname">Prénom :</label>
-            <input type="text" name="firstname" id="firstname" value="<% if (!isNew){ %><%= firstname %><% } %>" required placeholder="Votre prénom..." />
+            <input type="text" name="firstname" id="firstname" value="<% if (!isNew){ %><%= data.firstname %><% } %>" required placeholder="Votre prénom..." />
         </li>
         <li>
             <label for="name">Nom :</label>
-            <input type="text" name="name" id="name" value="<% if (!isNew){ %><%= name %><% } %>" placeholder="Votre nom..." />
+            <input type="text" name="name" id="name" value="<% if (!isNew){ %><%= data.name %><% } %>" placeholder="Votre nom..." />
         </li>
         <li>
             <label for="tel">Telephone :</label>
-            <input type="tel" name="tel" id="tel" value="<% if (!isNew){ %><%= tel  %><% } %>" />
+            <input type="tel" name="tel" id="tel" value="<% if (!isNew){ %><%= data.tel  %><% } %>" />
         </li>
         <li>
             <label for="website">Site :</label>
-            <input type="url" name="website" id="website" value="<% if (!isNew){ %><%= website %><% } %>" />
+            <input type="url" name="website" id="website" value="<% if (!isNew){ %><%= data.website %><% } %>" />
         </li>
         <li>
             <label for="city">Ville :</label>
-            <input type="text" name="city" id="city" placeholder="Votre ville..." value="<% if (!isNew){ %><%= city  %><% } %>" />
+            <input type="text" name="city" id="city" placeholder="Votre ville..." value="<% if (!isNew){ %><%= data.city  %><% } %>" />
         </li>
         <li>
             <label for="sexM">H</label>
-            <input type="radio" name="sexe" id="sexM" value="H" <% if(!isNew && sexe && sexe === "H"){ %> checked <% } %> />
+            <input type="radio" name="sexe" id="sexM" value="H" <% if(!isNew && data.sexe && data.sexe === "H"){ %> checked <% } %> />
         </li>
         <li>
             <label for="sexF">F</label>
-            <input type="radio" name="sexe" id="sexF" value="F" <% if(!isNew && sexe && sexe === "F"){ %> checked <% } %> />
+            <input type="radio" name="sexe" id="sexF" value="F" <% if(!isNew && data.sexe && data.sexe === "F"){ %> checked <% } %> />
         </li>
         <li>
             <label for="birthdate">Date de naissance:</label>
             <script>
 
-                computeAge = function(e) {
-                    try{
+                computeAge = function (e) {
+                    try {
                         console.log(document.getElementById("birthdate").value)
                         var years = new Date() - new Date(document.getElementById("birthdate").value);
                         document.getElementById("age").value = new Date(years).getFullYear() - 1970;
@@ -68,8 +68,8 @@
                 }
 
             </script>
-            <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()" 
-                   value="<%if(!isNew){%><%=convertDate(birthdate)%><%}%>" />
+            <input type="date" name="birthdate" id="birthdate" placeholder="JJ/MM/AAAA" required onchange="computeAge()"
+                   value="<%if(!isNew){%><%=convertDate(data.birthdate)%><%}%>" />
             <span class="form_hint">Format attendu "JJ/MM/AAAA"</span>
         </li>
         <li>
@@ -80,16 +80,19 @@
         </li>
         <li>
             <label for="size">Taille :</label>
-            <input type="range" name="taille" id="size" min="0" max="2.50" step="0.01" value="<% if (!isNew){ %><%= taille %><% } %>" />
+            <input type="range" name="taille" id="size" min="0" max="2.50" step="0.01" value="<% if (!isNew){ %><%= data.taille %><% } %>" />
         </li>
         <li>
             <label for="color">Couleur préférée :</label>
-            <input type="color" name="couleur" id="color" value="<% if (!isNew){ %><%= couleur %><% } %>" />
+            <input type="color" name="couleur" id="color" value="<% if (!isNew){ %><%= data.couleur %><% } %>" />
         </li>
-        <% if(!isNew && admin){ %>
+        <% if(!isNew){ %>
+        <% if(admin){
+        %>
         <li>
-            <input type="radio" name="role" id="role" value="Admin" <% if(role){ %> checked <% } %> />
+            <input type="radio" name="role" id="role" value="Admin" <% if(data.role){ %> checked <% } %> />
         </li>
+        <% } %>
         <% } %>
         <li>
             <label for="profilepicfile">Photo de profil:</label>
@@ -108,9 +111,9 @@
                     var ctx = canvas.getContext("2d");
                     // on réinitialise le canvas: on l'efface, et déclare sa largeur et hauteur à 0
                     ctx.fillStyle = "white";
-                    ctx.fillRect(0,0,canvas.width,canvas.height);
-                    canvas.width=0;
-                    canvas.height=0;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    canvas.width = 0;
+                    canvas.height = 0;
                     // on récupérer le fichier: le premier (et seul dans ce cas là) de la liste
                     var file = document.getElementById("profilepicfile").files[0];
                     // l'élément img va servir à stocker l'image temporairement
@@ -118,7 +121,7 @@
                     // l'objet de type FileReader nous permet de lire les données du fichier.
                     var reader = new FileReader();
                     // on prépare la fonction callback qui sera appelée lorsque l'image sera chargée
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         //on vérifie qu'on a bien téléchargé une image, grâce au mime type
                         if (!file.type.match(/image.*/)) {
                             // le fichier choisi n'est pas une image: le champs profilepicfile est invalide, et on supprime sa valeur

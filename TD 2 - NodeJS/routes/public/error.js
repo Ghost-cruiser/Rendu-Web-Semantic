@@ -4,7 +4,7 @@ module.exports = function (app, config, router, pagehelper) {
     
     router
 
-        .route('/error')
+        .route('/public/error')
 
         .get(function (req, res) {
             pagehelper

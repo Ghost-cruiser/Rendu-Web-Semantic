@@ -1,6 +1,6 @@
 <% if (query.message) {%>
-<% var state = 'danger'; if(query.status && query.status < 400) state = error; %>
+<% var state = 'danger'; if(query.status && query.status < 400) state = 'success'; %>
 <div class="alert alert-<%= state %>" role="alert">
-    <em><%= query.message %></em>
+    <em><%= decodeURIComponent(query.message) %></em>
 </div>
 <% } %>

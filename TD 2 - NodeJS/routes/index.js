@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, router, page) {
+module.exports = function (app, config, router, passport) {
 
     const
         fs = require("fs"),
@@ -28,7 +28,7 @@ module.exports = function (app, config, router, page) {
 
         .forEach(
         function (dir) {
-            require('./' + dir)(app, config, router, pagehelper);
+            require('./' + dir)(app, config, router, pagehelper, passport);
         });
 
     // init redirect
@@ -36,9 +36,11 @@ module.exports = function (app, config, router, page) {
         .route('/')
         .get(function (req, res, next) {
             if (req.session.user)
-                res.redirect(config.baseURL + '/' + req.session.user.role + '/index');
+                pagehelper
+                    .redirect(res, req.session.user.role, 'index');
             else
-                res.redirect(config.baseURL + '/login');
+                pagehelper
+                    .redirect(res, 'public', 'login');
         })
 
 

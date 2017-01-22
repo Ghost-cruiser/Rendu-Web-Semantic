@@ -45,7 +45,7 @@ module.exports = function (app, config, router, pagehelper) {
 
             if (id != 0) { 
                 // UPDATE
-                models.Drawing.update(req.body, { where: { id: id, userId: req.session.userId } }).then(function () {
+                models.Drawing.update(req.body, { where: { id: id, userId: userId } }).then(function () {
                     pagehelper
                         .redirect(res, 'admin', ['drawings', userId], {
                             message: 'Dessin mis à jour'

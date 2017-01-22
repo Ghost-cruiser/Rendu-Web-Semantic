@@ -1,23 +1,32 @@
 <div id="content-presenter">
-    <a href="<%= baseURL + basepath %>/0">Dessiner!</a>
-    <% if(drawings && drawings.length) { %>
-        <% for(var i = 0; i < drawings.length; i++) { %>
-            <div>
-                <div>
-                    <span><%= drawings[i].name || 'Dessin (sans nom) ' + i  %></span>
-                    <img src="<%= drawings[i].image %>" style="width: 30px; height:30px;" />
-                </div>
-                <div>
+    <a href="<%= baseURL + basepath %>/paint">Dessiner!</a>
+    <% if(data.drawings && data.drawings.length) { %>
+    <table class="table table-bordered">
+        <tbody>
+
+            <% for(var i = 0; i < data.drawings.length; i++) { %>
+            <tr>
+                <td>
+                    <img src="<%= data.drawings[i].picture %>" style="width: 30px; height:30px;" />
+                </td>
+                <td>
+                    <span><%= data.drawings[i].name || 'Dessin (sans nom) ' + i  %></span>
+                </td>
+                <td>
                     <div>
-                        <a href="<%= baseURL + basepath %>/<%= drawings[i].id %>">Voir</a>
+                        <a href="<%= baseURL + basepath %>/<%= data.drawings[i].id %>">Voir</a>
                     </div>
-                    <form action="<%= baseURL + basepath %>/<%= drawings[i].id %>" method="delete"> 
+                </td>
+                <td>
+                    <form action="<%= baseURL + basepath %>/<%= data.drawings[i].id %>" method="delete">
                         <input type="submit" value="Supprimer" />
                     </form>
-                </div>
-            </div>
-        <% } %>
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
     <% } else {%>
-        <em>Pas encore de dessin!</em>
+    <em>Pas encore de dessin!</em>
     <% } %>
 </div>

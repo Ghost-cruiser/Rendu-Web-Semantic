@@ -25,7 +25,9 @@
             var canvas = document.getElementById('myCanvas');
             canvas.width = 400;
             canvas.height= 400;
-            var context = canvas.getContext('2d');
+
+            var context = canvas.getContext('2d'),
+                rect = canvas.getBoundingClientRect();
 
             setSize();
             setColor();
@@ -112,8 +114,8 @@
             function Command(type, e){
                 return {
                     command:type,
-                    x: e ? e.x : "",
-                    y: e ? e.y : "",
+                    x: e ? e.clientX - rect.left : "",
+                    y: e ? e.clientY - rect.top : "",
                     size:size,
                     color: color
                 }
@@ -127,8 +129,7 @@
     <input id="size" type="range" min="0" max="4" />
 
     <!--TODO-->
-    <!-- ici, insérez un champs de type color avec id="color", et comme valeur l'attribut de session couleur (à l'aide d'une commande php echo).) -->
-    <input id="color" type="color" value="<%= usercolor %>" />
+    <input id="color" type="color" value="<%= user.couleur %>" />
 
     <input id="restart" type="button" value="Recommencer" />
 

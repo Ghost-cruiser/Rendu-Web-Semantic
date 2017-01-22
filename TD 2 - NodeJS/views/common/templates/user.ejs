@@ -1,10 +1,10 @@
 <div id="usercard"> 
     <div onclick="window.location = '<%= baseURL %>/api/profile'">
         <div>
-            <img id="avatar" src="<%= user.userpic %>"/>
+            <img id="avatar" src="<%= user.profilepic %>"/>
         </div>
         <div>
-            <span><%= user.firstname %></span>
+            <span><%= user.displayName %></span>
         </div>
     </div>
 </div>
