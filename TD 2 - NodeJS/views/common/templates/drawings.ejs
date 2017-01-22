@@ -24,9 +24,7 @@
                     </div>
                 </td>
                 <td>
-                    <form action="<%= baseURL + basepath %>/<%= data.drawings[i].id %>" method="delete">
-                        <input class="btn btn-danger" type="submit" value="Supprimer" />
-                    </form>
+                    <a class="btn btn-danger" href="<%= baseURL + basepath %>/delete/<%= data.drawings[i].id %>">Supprimer</a>
                 </td>
             </tr>
             <% } %>

@@ -20,8 +20,7 @@
       
       // config
       env = app.get('env') || process.env.NODE_ENV || "development",
-      config = require(__dirname + '/config/config.json')[env],
-      fb = require('./config/facebook_passport.js')(app, config, passport);
+      config = require(__dirname + '/config/config.json')[env];
 
 
 // configure app
@@ -48,13 +47,15 @@ app.use(cookieParser());
 // setting server
 setDao(app, config, session);
 setRoutes(app, config, router, passport);
+// FB sessions
+const fb = require('./config/facebook_passport.js')(app, config, passport);
 
 // use session and query strings in templates
 app.use(function (req, res, next) {
 
     res.locals.query = req.query || {};
 
-    res.locals.user = req.session.user;
+    res.locals.user = req.session.passport ? req.session.passport.user : undefined;
 
     next();
 });

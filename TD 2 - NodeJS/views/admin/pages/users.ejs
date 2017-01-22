@@ -1,0 +1,34 @@
+<div>
+    <% include ../../common/templates/alert %>
+</div>
+
+<div class="panel">
+    <a class="btn btn-success" href="<%= baseURL %>/admin/users/0">Ajouter un utilisateur</a>
+</div>
+
+<table class="table table-bordered">
+    <tbody>
+        <% for(var i = 0; i < data.users.length; i++){ %>
+        <tr <% if (i === 0) {%> class="success" <% } %>>
+            <td>
+                <span><%= i %></span>
+            </td>
+            <td>
+                <span><%=  data.users[i].email %></span>
+            </td>
+            <td>
+                <a class="btn btn-warning" href="<%= baseURL %>/admin/drawings/<%=  data.users[i].id %>">Dessins</a>
+
+            </td>
+            <td>
+                <a class="btn btn-success" href="<%= baseURL %>/admin/users/<%=  data.users[i].id %>">Modifier</a>
+            </td>
+            <td>
+                <form  <% if (i !== 0) {%> method="delete" action="<%= baseURL %>/admin/users/delete/<%=  data.users[i].id %>" <% } %>>
+                    <input class="btn btn-danger" type="submit" value="Supprimer" <% if (i === 0) {%> disabled <% } %>/>
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>

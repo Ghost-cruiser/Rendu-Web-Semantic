@@ -21,6 +21,7 @@ table input, table a {
 
 main {
     height:80vh;
+    overflow-y:auto;
 }
 footer {
     height:5vh;
@@ -50,7 +51,7 @@ form > div {
 html {
     font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
     font-size: 14px;
-
+    overflow:hidden;
 }
 .inscription h2, .inscription label {font-family:Georgia, Times, "Times New Roman", serif;}
 .form_hint, .required_notification {font-size: 11px;}

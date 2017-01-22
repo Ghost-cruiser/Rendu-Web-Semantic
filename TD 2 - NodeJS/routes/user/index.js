@@ -8,7 +8,7 @@ module.exports = function (app, config, router, pagehelper, passport) {
 
     // Filter 
     router.all('/user/*', function (req, res, next) {
-        if (!req.session || !req.session.user)
+        if (!req.session.passport || !req.session.passport.user)
             pagehelper
                 .redirect(res, 'public', 'login', null, 403);
 

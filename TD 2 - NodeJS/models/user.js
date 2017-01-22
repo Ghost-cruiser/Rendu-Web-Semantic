@@ -4,7 +4,6 @@ module.exports = function (sequelize, DataTypes) {
     var User = sequelize.define("User", {
         password: {
             type: DataTypes.CHAR(65),
-            allowNull: false,
             get: function () {
                 return undefined;
             }
@@ -25,8 +24,7 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: 'O',
         },
         birthdate: {
-            type: DataTypes.DATE,
-            allowNull: false,
+            type: DataTypes.DATE
         },
 
         city : DataTypes.STRING,
@@ -45,7 +43,7 @@ module.exports = function (sequelize, DataTypes) {
                 this.setDataValue('couleur', val.replace('#', ''));
             },
             get: function () {
-                return '#' + this.getDataValue('couleur');
+                return '#' + this.getDataValue('couleur') || '000000';
             }
         },
         profilepic: {
@@ -66,6 +64,10 @@ module.exports = function (sequelize, DataTypes) {
                     "user";
             }
         },
+
+        facebookId: {
+            type: DataTypes.STRING,
+        }
 
     }, {
             classMethods: {

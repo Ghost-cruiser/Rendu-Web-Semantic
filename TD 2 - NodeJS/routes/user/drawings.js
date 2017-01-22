@@ -10,7 +10,7 @@ module.exports = function (app, config, router, pagehelper) {
         // return the list of all drawings for a user
         .get(function (req, res) {
             // GET ALL
-            models.Drawing.findAll({ where: { userId: req.session.user.id } })
+            models.Drawing.findAll({ where: { UserId: req.session.passport.user.id } })
                 .then(function (drawings) {
                     pagehelper
                         .render(res, 'user', 'drawings', { drawings: drawings }, 'Mes dessins');
@@ -36,7 +36,7 @@ module.exports = function (app, config, router, pagehelper) {
         .get(function (req, res) {
             var id = req.params.id;
 
-            models.Drawing.findOne({ where: { id: id, userId: req.session.user.id } }).then(function (result) {
+            models.Drawing.findOne({ where: { id: id, UserId: id } }).then(function (result) {
 
                 var draw = result.get();
 
@@ -54,7 +54,7 @@ module.exports = function (app, config, router, pagehelper) {
             //ADD
             var draw = req.body;
 
-            draw.UserId = req.session.user.id;
+            draw.UserId = req.session.passport.user.id;
 
             models.Drawing.create(draw).then(function () {
                 pagehelper.redirect(res, 'user', 'drawings', {
@@ -66,12 +66,15 @@ module.exports = function (app, config, router, pagehelper) {
                 pagehelper
                     .sendError(res, error);
             });
-        })
+        });
 
-        .delete(function (req, res) {
+    router
+        .route('/user/drawings/delete/:id')
+
+        .get(function (req, res) {
             var id = req.params.id;
 
-            models.Drawing.destroy({ where: { id: id, userId: req.session.user.id } }).then(function () {
+            models.Drawing.destroy({ where: { id: id, UserId: id } }).then(function () {
                 pagehelper.redirect(res, 'user', 'drawings', {
                     status: 204,
                     message: 'Dessin supprimé!'

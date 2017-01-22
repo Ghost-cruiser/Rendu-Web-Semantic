@@ -1,18 +1,22 @@
 <ul class="nav nav-tabs nav-justified">
     <li>
-        <% include ../templates/user-tpl %>
+        <% include ../../common/templates/user %>
     </li>
 
     <li>
-        <a href="<%= baseURL %>/logout">Home</a>
+        <a href="<%= baseURL %>/">Home</a>
     </li>
 
 
     <li>
-        <a href="<%= baseURL %>/todo">Utilisateurs</a>
+        <a href="<%= baseURL %>/admin/users">Utilisateurs</a>
     </li>
 
     <li>
-        <a href="<%= baseURL %>/logout">D�connexion</a>
+        <a href="<%= baseURL %>/admin/parameters">Paramètres</a>
+    </li>
+
+    <li>
+        <a href="<%= baseURL %>/public/logout">Déconnexion</a>
     </li>
 </ul>

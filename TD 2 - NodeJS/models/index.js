@@ -36,7 +36,7 @@ module.exports = function (app, config, session) {
         });
 
     // Synchronise
-    database.sync();
+    database.sync({ force: true });
 
     // Setup session
     app.use(session({

@@ -1,17 +1,19 @@
-<div class="navbar-header">
-    <% include ../../common/templates/user %>
-</div>
-
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs nav-justified">
     <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/user/index">Home</a>
+        <% include ../../common/templates/user %>
     </li>
 
     <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/user/drawings">Mes dessins</a>
+        <a href="<%= baseURL %>/">Home</a>
     </li>
 
+
     <li>
-        <a class="btn btn-primary" href="<%= baseURL %>/public/logout">Déconnexion</a>
+        <a href="<%= baseURL %>/user/drawings">Mes dessins</a>
+    </li>
+
+
+    <li>
+        <a href="<%= baseURL %>/public/logout">Déconnexion</a>
     </li>
 </ul>

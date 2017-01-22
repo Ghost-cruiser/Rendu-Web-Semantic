@@ -35,9 +35,10 @@ module.exports = function (app, config, router, passport) {
     router
         .route('/')
         .get(function (req, res, next) {
-            if (req.session.user)
+            var user = req.session.passport ? req.session.passport.user : undefined;
+            if (user)
                 pagehelper
-                    .redirect(res, req.session.user.role, 'index');
+                    .redirect(res, user.role, 'index');
             else
                 pagehelper
                     .redirect(res, 'public', 'login');

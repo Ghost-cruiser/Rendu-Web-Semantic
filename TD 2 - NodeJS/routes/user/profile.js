@@ -13,7 +13,7 @@ module.exports = function (app, config, router, pagehelper) {
         // Get the user's profile
         .get(function (req, res) {
             // USER
-            models.User.findOne({ where: { id: req.session.user.id } }).then(function (result) {
+            models.User.findOne({ where: { id: req.session.passport.user.id } }).then(function (result) {
                 pagehelper
                     .render(res, 'user', 'profile', result.get(), 'Profile');
 
@@ -30,7 +30,7 @@ module.exports = function (app, config, router, pagehelper) {
             var user = req.body;
 
             // UPDATE 
-            models.User.update(req.body, { where: { id: req.session.user.id } }).then(function () {
+            models.User.update(req.body, { where: { id: req.session.passport.user.id } }).then(function () {
                 pagehelper
                     .redirect(res, 'user', 'index', '', {
                         message: 'Profile mis à jour!'
@@ -43,11 +43,15 @@ module.exports = function (app, config, router, pagehelper) {
 
         })
 
-        // DELETE /user/profile
-        // Delete a user using its username
-        .delete(function (req, res) {
-            models.User.destroy({ where: { id: req.session.user.id } }).then(function () {
+    router
+        .route('/user/profile/delete')
+
+        // GET /user/profile/delete
+        // Delete a user using its id
+        .get(function (req, res) {
+            models.User.destroy({ where: { id: req.session.passport.user.id } }).then(function () {
                 req.session.destroy();
+                delete req.session.passport.user;
 
                 pagehelper
                     .redirect(res, 'public', 'login', '', {

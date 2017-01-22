@@ -9,7 +9,7 @@ module.exports = function (app, config, router, pagehelper, passport) {
 
     // Filter 
     router.all('/admin/*', function (req, res, next) {
-        if (!req.session || req.session.role !== "admin")
+        if (!req.session.passport || !req.session.passport.user || req.session.passport.user.role !== "admin")
             pagehelper
                 .sendError(res, 'Accès restreint', 'Vous devez être authentifier en tant qu\'administrateur.');
 

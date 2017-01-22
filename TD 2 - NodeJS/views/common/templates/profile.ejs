@@ -86,13 +86,20 @@
             <label for="color">Couleur préférée :</label>
             <input type="color" name="couleur" id="color" value="<% if (!isNew){ %><%= data.couleur %><% } %>" />
         </li>
-        <% if(!isNew){ %>
         <% if(admin){
         %>
         <li>
-            <input type="radio" name="role" id="role" value="Admin" <% if(data.role){ %> checked <% } %> />
+            <label for="role">Role :</label>
+            <select type="" name="role" id="role" >
+                <option value="1"  <% if(data.role === 'admin'){ %> selected="selected" <% } %>>
+                    Administrateur
+                </option>
+
+                <option value="0"  <% if(data.role === 'user'){ %>  selected="selected" <% } %>>
+                    Utilisateur
+                </option>
+            </select>
         </li>
-        <% } %>
         <% } %>
         <li>
             <label for="profilepicfile">Photo de profil:</label>

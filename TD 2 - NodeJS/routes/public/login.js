@@ -8,8 +8,8 @@ module.exports = function (app, config, router, pagehelper, passport) {
         .route('/public/login')
 
         .get(function (req, res) {
-            if (req.session.user !== undefined)
-                pagehelper.redirect(res, req.session.user.role, 'index');
+            if (req.session.passport && req.session.passport.user !== undefined)
+                pagehelper.redirect(res, req.session.passport.user.role, 'index');
             else
                 pagehelper.render(res, 'public', 'login', {}, 'Connexion');
         })
@@ -22,7 +22,7 @@ module.exports = function (app, config, router, pagehelper, passport) {
                         if (result.getDataValue('password') === req.body.password) {
                             var user = result.session;
                             console.log(user);
-                            req.session.user = user;
+                            req.session.passport.user = user;
                             res.locals.user = result;
 
                             pagehelper.redirect(res, user.role, 'index');
@@ -53,17 +53,26 @@ module.exports = function (app, config, router, pagehelper, passport) {
     router
         .route('/public/login/facebook')
         //Passport Router
-        .get(function () { passport.authenticate('facebook') });
+        .get(passport.authenticate('facebook', { scope: 'email' }));
 
     router
         .route('/public/login/facebook/callback')
-        .get(function () {
-            passport.authenticate('facebook', {
-                successRedirect: '/',
-                failureRedirect: '/public/login'
-            })
-        },
+        .get(passport.authenticate('facebook', {
+                successRedirect: config.baseURL + '/',
+                failureRedirect: config.baseURL + '/public/login'
+        }),
+
+             // on succes
         function (req, res) {
-            res.redirect('/');
+            // return the token or you would wish otherwise give eg. a succes message
+            res.render('json', JSON.stringify(req.user.access_token));
+        },
+    function (err, req, res, next) {
+            // You could put your own behavior in here, fx: you could force auth again...
+        // res.redirect('/auth/facebook/');
+        if (err) {
+            pagehelper
+                .sendError(res, err, err, 500);
+            }
         });
 }

@@ -17,7 +17,7 @@ module.exports = function (app, config, router, pagehelper) {
             // ADMIN
             models.User.findAll().then(function (users) {
                 pagehelper
-                    .render(res, 'admin', 'users', users, 'Liste des utilisateurs');
+                    .render(res, 'admin', 'users', { users: users }, 'Liste des utilisateurs');
 
             }).catch(function (error) {
                 pagehelper
@@ -36,7 +36,7 @@ module.exports = function (app, config, router, pagehelper) {
             var id = req.params.id;
 
             if (id != 0) {
-                models.User.findOne({ where: { id: req.body.id } }).then(function (result) {
+                models.User.findOne({ where: { id: id } }).then(function (result) {
                     pagehelper
                         .render(res, 'admin', 'user', result.get(), 'Fiche utilisateur');
 
@@ -57,8 +57,8 @@ module.exports = function (app, config, router, pagehelper) {
         .post(function (req, res) {
             var id = req.params.id,
                 user = req.body;
-            
-            if (!id) {
+
+            if (id == 0) {
                 // INSCRIPTION
                 models.User.create(user).then(function () {
                     pagehelper
@@ -73,27 +73,33 @@ module.exports = function (app, config, router, pagehelper) {
             }
 
             else {
-                    // UPDATE 
+                // UPDATE 
                 models.User.update(req.body, { where: { id: id } }).then(function () {
                     pagehelper
                         .redirect(res, 'admin', 'users', null, {
                             message: 'User Updated'
                         });
 
-                    }).catch(function (error) {
-                        pagehelper
-                            .sendError(res, 500, error, "Une erreur est survenue durant la mise à jour");
-                    });
-                
-            }
-        })
+                }).catch(function (error) {
+                    pagehelper
+                        .sendError(res, 500, error, "Une erreur est survenue durant la mise à jour");
+                });
 
-        // DELETE /user/users
+            }
+        });
+
+        // Get /users/delete/:userId
         // Delete a user using its username
-        .delete(function (req, res) {
-            models.User.destroy({ where: { id: req.body.id } }).then(function () {
+
+    router
+
+        .route('/admin/users/delete/:id')
+
+        .get(function (req, res) {
+            models.User.destroy({ where: { id: req.params.id } }).then(function () {
                 pagehelper
                     .redirect(res, 'admin', 'users', null, {
+                        status: 204,
                         message: 'User deleted'
                     });
 
