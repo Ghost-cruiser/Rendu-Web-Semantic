@@ -5,7 +5,7 @@
             // la dernière position du stylo
             var x0, y0;
             // le tableau de commandes de dessin à envoyer au serveur lors de la validation du dessin
-            var drawingCommands = JSON.parse('<%= drawingCommands %>');
+            var drawingCommands = JSON.parse(decodeURIComponent('<%= encodeURIComponent(data.drawingCommands) %>'));
 
             window.onload = function() {
                 var canvas = document.getElementById('myCanvas');

@@ -41,7 +41,7 @@ module.exports = function (app, config, router, pagehelper) {
                 var draw = result.get();
 
                 pagehelper
-                    .render(res, 'user', 'guess', { draw: draw }, 'Guess');
+                    .render(res, 'user', 'guess', draw, 'Guess');
 
             }).catch(function (error) {
 

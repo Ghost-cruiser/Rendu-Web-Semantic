@@ -1,5 +1,8 @@
 <div id="content-presenter">
-    <a href="<%= baseURL + basepath %>/paint">Dessiner!</a>
+    <div class="panel">
+        <a class="btn btn-default" href="<%= baseURL + basepath %>/paint">Dessiner</a>
+    </div>
+
     <% if(data.drawings && data.drawings.length) { %>
     <table class="table table-bordered">
         <tbody>
@@ -7,19 +10,22 @@
             <% for(var i = 0; i < data.drawings.length; i++) { %>
             <tr>
                 <td>
+                    <%= i %>
+                </td>
+                <td>
                     <img src="<%= data.drawings[i].picture %>" style="width: 30px; height:30px;" />
                 </td>
                 <td>
-                    <span><%= data.drawings[i].name || 'Dessin (sans nom) ' + i  %></span>
+                    <span><%= data.drawings[i].name || 'Dessin (sans nom)'  %></span>
                 </td>
                 <td>
                     <div>
-                        <a href="<%= baseURL + basepath %>/<%= data.drawings[i].id %>">Voir</a>
+                        <a class="btn btn-success" href="<%= baseURL + basepath %>/<%= data.drawings[i].id %>">Voir</a>
                     </div>
                 </td>
                 <td>
                     <form action="<%= baseURL + basepath %>/<%= data.drawings[i].id %>" method="delete">
-                        <input type="submit" value="Supprimer" />
+                        <input class="btn btn-danger" type="submit" value="Supprimer" />
                     </form>
                 </td>
             </tr>
@@ -27,6 +33,8 @@
         </tbody>
     </table>
     <% } else {%>
-    <em>Pas encore de dessin!</em>
+    <div>
+        <em>Pas encore de dessin!</em>
+    </div>
     <% } %>
 </div>
