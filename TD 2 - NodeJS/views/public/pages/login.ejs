@@ -1,7 +1,7 @@
 <% include ../../common/templates/alert %>
 
 <div id="login-page">
-    <div class="container-fluid panel panel-default">
+    <div class="container-fluid card">
         <form id="login-form" method="post" action="<%= baseURL %>/public/login">
             <h1>Login</h1>
 
@@ -13,7 +13,7 @@
                 <input type='password' id='pass' name='password' pattern="[a-zA-Z0-9]{6,8}" class="form-control" placeholder="Mot de passe" />
             </div>
             <div class="input-group">
-                <input type="submit" value="Login" class="btn btn-default form-control">
+                <input type="submit" value="Login" class="btn btn-secondary" style="width: 100%;">
             </div>
             <% if (params && params.facebook) {%> 
             <div class="input-group">

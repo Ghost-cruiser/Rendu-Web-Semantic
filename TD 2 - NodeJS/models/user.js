@@ -50,7 +50,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BLOB,
 
             get: function () {
-                return 'user/profile/' + this.getDataValue('id') + '/profilepic';
+                var test = this.getDataValue('profilepic').length;
+                if (test)
+                    return '/pictio/user/profile/' + this.getDataValue('id') + '/profilepic';
+                else
+                    return '/images/default.jpg';
             }
         },
 

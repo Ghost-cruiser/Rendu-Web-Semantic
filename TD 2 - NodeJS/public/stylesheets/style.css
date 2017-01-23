@@ -5,8 +5,36 @@
     height:100%;
 }
 #login-page > div{
-    height: 40vh;
+    height: 47vh;
     width: 300px;
+}
+#login-form{
+    padding:10px;
+}
+#inscription-form{
+    height:100vh;
+}
+#inscription-form > ul{
+    height:100%;
+}
+#inscription-form  li{
+    height:7vh;
+}
+#inscription-form  input{
+    height:2em;
+}
+
+.card-presenter {
+    display:flex;
+    justify-content: space-around;
+    align-items:center;
+    align-content:center;
+    padding: 20px;
+    margin-top:5vh;
+}
+.img-presenter {
+    width: 20rem;
+    height:100%;
 }
 
 h1 {
@@ -40,9 +68,10 @@ form > div {
 }
 
 #header-nav {
-    display:flex;
-    justify-content: space-between;
     padding: 10px 10px 0 10px;
+}
+#header-nav > ul {
+    width:100%;
 }
 /* === Remove input autofocus webkit === */
 *:focus {outline: none;}
