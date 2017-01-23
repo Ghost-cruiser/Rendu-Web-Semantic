@@ -8,8 +8,11 @@ module.exports = function (app, config, router, pagehelper) {
 
         .get(function (req, res) {
             req.logout();
+            
+            //pagehelper.redirect(res, 'public', 'login', null, 302);
             if (req.session)
                 req.session.destroy(function (err) {
+                   
 
                     if (err)
                         console.log(err);

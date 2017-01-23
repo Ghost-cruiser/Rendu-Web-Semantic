@@ -36,7 +36,7 @@ module.exports = function (app, config, router, pagehelper) {
         .get(function (req, res) {
             var id = req.params.id;
 
-            models.Drawing.findOne({ where: { id: id, UserId: id } }).then(function (result) {
+            models.Drawing.findOne({ where: { id: id, UserId: req.session.passport.user.id } }).then(function (result) {
 
                 var draw = result.get();
 

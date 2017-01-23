@@ -1,0 +1,23 @@
+<div id="content-presenter">
+    <div>
+        <div class="panel">
+            <h2 style="text-align:center">Paramètres</h2>
+        </div>
+        <form method="post" class="panel panel-default" style="padding:10px">
+            <h3 >Méthodes d'authentification</h3>
+            <ul style="margin-bottom:3vh">
+                <% for(var key in data.parameters) { %>
+                <li>
+                    <span>
+                        <input type="checkbox" name="<%= key %>" <% if (data.parameters[key]){ %> checked <% } %> value="1" />
+                    </span>
+                    <span>
+                        <%= key %>
+                    </span>
+                </li>
+            <% } %>
+            </ul>
+            <input type="submit" value="Valider" class="btn btn-success form-control" />
+        </form>
+    </div>
+</div>

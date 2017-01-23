@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-module.exports = function (app, config, session) {
+module.exports = function (app, config, session, onfinished) {
     const fs = require("fs"),
           path = require("path"),
           
@@ -36,7 +36,17 @@ module.exports = function (app, config, session) {
         });
 
     // Synchronise
-    database.sync({ force: true });
+    database.sync().then(function () {
+
+        // Setup paramaters
+        dao.Parameter.findOne({ where: { id: 1 } }).then(function (result) {
+
+            app.locals.params = result.getView || {};
+
+            onfinished();
+        });
+    });
+
 
     // Setup session
     app.use(session({
@@ -48,4 +58,5 @@ module.exports = function (app, config, session) {
 
     // expose dao
     app.set('models', dao);
+
 };

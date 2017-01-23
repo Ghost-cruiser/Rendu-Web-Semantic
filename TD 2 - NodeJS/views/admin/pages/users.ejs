@@ -9,12 +9,12 @@
 <table class="table table-bordered">
     <tbody>
         <% for(var i = 0; i < data.users.length; i++){ %>
-        <tr <% if (i === 0) {%> class="success" <% } %>>
+        <tr <% if ( data.users[i].id === user.id ) {%> class="success" <% } %>>
             <td>
                 <span><%= i %></span>
             </td>
             <td>
-                <span><%=  data.users[i].email %></span>
+                <span><%=  data.users[i].email + ' (' + data.users[i].firstname + ')' %></span>
             </td>
             <td>
                 <a class="btn btn-warning" href="<%= baseURL %>/admin/drawings/<%=  data.users[i].id %>">Dessins</a>

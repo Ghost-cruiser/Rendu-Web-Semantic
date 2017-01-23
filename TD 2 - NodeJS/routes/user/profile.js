@@ -63,6 +63,25 @@ module.exports = function (app, config, router, pagehelper) {
                     .sendError(res, error);
             });
 
-        })
+        });
+
+
+    router
+        .route('/user/profile/:id/profilepic')
+
+        // GET /user/profile/userId/profilepic
+        // Delete a user using its id
+        .get(function (req, res) {
+            var id = req.params.id;
+
+            models.User.findOne({ where: { id: id } }).then(function (user) {
+                res.setHeader('content-type', 'image/png');
+                res.send(user.getDataValue('profilepic'));
+
+            }).catch(function (error) {
+                res.send(error);
+            });
+
+        });
 
 }

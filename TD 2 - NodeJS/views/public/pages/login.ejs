@@ -6,7 +6,7 @@
             <h1>Login</h1>
 
             <div class="input-group">
-                <input type='email' id='user' name='email' class="form-control" placeholder="user@example.com" />
+                <input type='email' id='user' name='username' class="form-control" placeholder="user@example.com" />
             </div>
 
             <div class="input-group">
@@ -15,11 +15,19 @@
             <div class="input-group">
                 <input type="submit" value="Login" class="btn btn-default form-control">
             </div>
+            <% if (params && params.facebook) {%> 
             <div class="input-group">
-                <a class="form-control btn btn-primary" href="<%= baseURL %>/public/login/facebook">Facebook</a>
+                <a class="form-control btn btn-primary" href="<%= baseURL %>/public/login/facebook">Via Facebook</a>
             </div>
-
-            Accès à l'<a href="<%= baseURL %>/public/inscription">inscription</a>
+            <% } %>
+            <% if (params && params.google) {%> 
+            <div class="input-group">
+                <a class="form-control btn btn-danger" href="<%= baseURL %>/public/login/google">Via Google</a>
+            </div>
+            <% } %>
+            <div style="text-align: right">
+                Accès à l'<a href="<%= baseURL %>/public/inscription">inscription</a>
+            </div>
         </form>
     </div>
 </div>

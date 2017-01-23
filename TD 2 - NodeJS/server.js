@@ -9,11 +9,6 @@
       bodyParser = require('body-parser'),
       cookieParser = require('cookie-parser'),
       
-      
-      // server
-      setDao = require('./models'),
-      setRoutes = require('./routes'),
-      
       // express
       app = express(),
       router = express.Router(),
@@ -44,11 +39,32 @@ app.use(express.static(__dirname + '/public')); // Indique que le dossier /publi
 
 app.use(cookieParser());
 
+
+
+
+
+// server
+const setDao = require('./models'),
+    setRoutes = require('./routes');
+
 // setting server
-setDao(app, config, session);
-setRoutes(app, config, router, passport);
-// FB sessions
-const fb = require('./config/facebook_passport.js')(app, config, passport);
+setDao(app, config, session, function () {
+
+    const 
+     fb = require('./config/facebook_passport.js')(app, config, passport),
+
+     google = require('./config/google_passport.js')(app, config, passport);
+
+
+    setRoutes(app, config, router, passport);
+});
+
+
+
+
+const // LOCAL sessions
+      localpass = require('./config/local_passport.js')(app, config, passport);
+
 
 // use session and query strings in templates
 app.use(function (req, res, next) {

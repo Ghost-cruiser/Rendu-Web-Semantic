@@ -11,6 +11,10 @@
 
     "facebook_api_key": "205692919894740",
     "facebook_api_secret": "c9f714a777245aef0a4f6cc8ae838b71",
-    "callback_url": "http://localhost:1337/pictio/public/login/facebook/callback"
+    "callback_url": "http://localhost:1337/pictio/public/login/facebook/callback",
+
+    "google_api_key": "1031370023116-co2mub9c3476lci9qpu3jhndfj3sh5m4.apps.googleusercontent.com",
+    "google_api_secret": "hWA0tFnwlhv88nG4P8E_tLM7",
+    "google_callback_url": "http://localhost:1337/pictio/public/login/google/callback"
   }
 }

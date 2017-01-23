@@ -104,7 +104,7 @@
         <li>
             <label for="profilepicfile">Photo de profil:</label>
 
-            <input type="file" id="profilepicfile" onchange="loadProfilePic(this)" />
+            <input type="file" id="profilepicfile" onchange="loadProfilePic(this)" <% if (!isNew){%> src="<%= data.profilepic %>"<%}%> />
 
             <span class="form_hint">Choisissez une image.</span>
 

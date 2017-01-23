@@ -50,7 +50,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BLOB,
 
             get: function () {
-                return "user" + '/' + this.getDataValue('id') + '/profilepic';
+                return 'user/profile/' + this.getDataValue('id') + '/profilepic';
             }
         },
 
@@ -66,6 +66,10 @@ module.exports = function (sequelize, DataTypes) {
         },
 
         facebookId: {
+            type: DataTypes.STRING,
+        },
+
+        googleId: {
             type: DataTypes.STRING,
         }
 
@@ -84,7 +88,8 @@ module.exports = function (sequelize, DataTypes) {
                         role: this.role,
                         displayName: this.firstname,
                         couleur: this.couleur,
-                        email: this.email
+                        email: this.email,
+                        profilepic: this.profilepic
                     }
                 }
             }

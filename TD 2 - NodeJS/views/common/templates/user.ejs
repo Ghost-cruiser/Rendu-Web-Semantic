@@ -1,7 +1,7 @@
 <div id="usercard"> 
     <div onclick="window.location = '<%= baseURL %>/user/profile'">
         <div>
-            <img id="avatar" src="<%= user.profilepic %>"/>
+            <img id="avatar" src="<%= baseURL + '/' + user.profilepic %>"/>
         </div>
         <div>
             <span><%= user.displayName %></span>
